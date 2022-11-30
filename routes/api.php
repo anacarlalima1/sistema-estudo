@@ -14,9 +14,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
-});
+//Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
+//    return $request->user();
+//});
 
 Route::post('/cadastrar-questao', [\App\Http\Controllers\QuestaoController::class, 'cadastrarQuestao']);
 Route::post('/inativar-questao', [\App\Http\Controllers\QuestaoController::class, 'inativarQuestao']);
@@ -25,3 +25,13 @@ Route::post('/enviar-resposta', [\App\Http\Controllers\RespostaController::class
 Route::get('/get-media-geral', [\App\Http\Controllers\RespostaController::class, 'getMediaGeral']);
 
 Route::get('/{id_user}/get-questoes/{id_questao}', [\App\Http\Controllers\RespostaController::class, 'listarQuestoes']);
+
+Route::get('/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
+
+
+Route::post('auth/login', [\App\Http\Controllers\Api\AuthController::class, 'login']);
+
+Route::group(['middleware' => ['apiJwt']], function (){
+    Route::get('/users', [\App\Http\Controllers\Api\UserController::class, 'index']);
+    Route::post('auth/logout', [\App\Http\Controllers\Api\AuthController::class, 'logout']);
+});
